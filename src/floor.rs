@@ -10,8 +10,8 @@ pub struct MaqFloor {
 
 pub fn init_floor() -> MaqFloor {
     //create the floor size
-    const L: usize = 10;
-    const W: usize = 10;
+    const L: usize = 40;
+    const W: usize = 40;
 
     let states = [0;L*W];
 
