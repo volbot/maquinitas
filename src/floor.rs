@@ -1,6 +1,7 @@
 //Maquinita Floor (the map)
 // len + wid are length and width
 // states is an array of what is in each area
+#[derive(Debug, Clone)]
 pub struct MaqFloor {
     len: usize,
     wid: usize,
