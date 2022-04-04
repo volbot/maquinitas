@@ -3,9 +3,9 @@
 // states is an array of what is in each area
 #[derive(Debug, Clone)]
 pub struct MaqFloor {
-    len: usize,
-    wid: usize,
-    states: Box<[u8]>,
+    pub len: i16,
+    pub wid: i16,
+    pub states: Box<[u8]>,
 }
 
 pub fn init_floor() -> MaqFloor {
