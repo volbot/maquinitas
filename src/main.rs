@@ -10,9 +10,9 @@ async fn main() {
     loop {
         clear_background(RED);
 
-        if()
+        
 
-        next_frame().await
+        next_frame().await;
     }
 }
 
