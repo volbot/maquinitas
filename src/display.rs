@@ -14,8 +14,11 @@ pub fn draw(floor: MaqFloor) {
     //iterate over floor
     while x < floor.wid {
         while y < floor.len {
+            //get machine filling [x][y]
             let maq = get_maq(states[(x * floor.wid)+y]);
+            //draw its color at [x][y]
             draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, maq.color);
+            
             y+=1;
         }
         y=0;

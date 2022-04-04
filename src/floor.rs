@@ -13,11 +13,13 @@ pub fn init_floor() -> MaqFloor {
     const L: usize = 10;
     const W: usize = 10;
 
+    //create floor
     let floor = MaqFloor {
         len: L,
         wid: W,
         states: Vec::with_capacity(L*W),
     };
+
     //return the floor
     floor
 }
