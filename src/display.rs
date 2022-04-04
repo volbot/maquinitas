@@ -12,7 +12,7 @@ pub fn draw(floor: MaqFloor) {
     //iterate over floor
     while x < floor.wid {
         while y < floor.len {
-            draw_rectangle(tile_wid as f32, tile_len as f32, x as f32, y as f32, GREEN);
+            draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, BLUE);
             y+=1;
         }
         x+=1;
