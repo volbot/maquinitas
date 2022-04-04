@@ -5,7 +5,7 @@
 pub struct MaqFloor {
     pub len: usize,
     pub wid: usize,
-    pub states: Vec<u8>,
+    pub states: Box<[u8]>,
 }
 
 pub fn init_floor() -> MaqFloor {
@@ -13,11 +13,13 @@ pub fn init_floor() -> MaqFloor {
     const L: usize = 10;
     const W: usize = 10;
 
+    let states = [0;L*W];
+
     //create floor
     let floor = MaqFloor {
         len: L,
         wid: W,
-        states: Vec::with_capacity(L*W),
+        states: Box::new(states),
     };
 
     //return the floor

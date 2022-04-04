@@ -11,8 +11,8 @@ async fn main() {
     let mut game_floor = floor::init_floor();
 
     //vars for filling floor
-    let mut x: i32 = 0;
-    let mut y: i32 = 0;
+    let mut x: usize = 0;
+    let mut y: usize = 0;
     let mut flop: u8 = 0;
 
     //for each x
@@ -36,7 +36,7 @@ async fn main() {
             }
 
             //add Flop to the states Vec
-            game_floor.states.push(flop);
+            game_floor.states[(x*game_floor.wid)+y] = flop;
 
             y+=1;
         }
