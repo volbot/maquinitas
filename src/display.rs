@@ -18,5 +18,4 @@ pub fn draw(floor: MaqFloor) {
         y=0;
         x+=1;
     }
-    draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, GREEN);
 }
