@@ -15,6 +15,7 @@ pub fn draw(floor: MaqFloor) {
             draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, BLUE);
             y+=1;
         }
+        y=0;
         x+=1;
     }
     draw_rectangle(screen_width() / 2.0 - 60.0, 100.0, 120.0, 60.0, GREEN);
