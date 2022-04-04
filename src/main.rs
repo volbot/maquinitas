@@ -16,7 +16,7 @@ async fn main() {
     let mut flop: u8 = 0;
 
     //for each x
-    while x < 10{
+    while x < game_floor.wid{
 
         //flipflop Flop when it gets here
         if flop == 0 {
@@ -26,7 +26,7 @@ async fn main() {
         }
 
         //for each y
-        while y < 10{
+        while y < game_floor.len{
 
             //flipflop Flop when it gets here
             if flop == 0 {
