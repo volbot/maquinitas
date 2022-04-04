@@ -1,6 +1,7 @@
 use macroquad::prelude::*;
 
 use crate::floor::MaqFloor;
+use crate::maqs::get_maq;
 
 pub fn draw(floor: MaqFloor) {
     //loop variables
@@ -9,10 +10,12 @@ pub fn draw(floor: MaqFloor) {
     //loop params
     let mut x = 0;
     let mut y = 0;
+    let states = floor.states;
     //iterate over floor
     while x < floor.wid {
         while y < floor.len {
-            draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, BLUE);
+            let maq = get_maq(states[(x * floor.wid)+y]);
+            draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, maq.color);
             y+=1;
         }
         y=0;
