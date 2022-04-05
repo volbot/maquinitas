@@ -1,6 +1,7 @@
 use macroquad::prelude::*;
 
 pub mod floor;
+pub mod toolbar;
 pub mod display;
 pub mod maqs;
 
@@ -11,6 +12,7 @@ async fn main() {
 
     //game vars
     let mut game_floor = floor::init_floor();
+    let toolbar = toolbar::init_toolbar();
 
     //vars for filling floor
     let mut x: usize = 0;
@@ -49,10 +51,11 @@ async fn main() {
     //MAIN GAME LOOP
     loop {
         //clear screen to red
-        clear_background(RED);
+        clear_background(GRAY);
 
-        //draw the floor
+        //draw things
         game_floor.draw();
+        toolbar.draw();
 
         //query actions
         

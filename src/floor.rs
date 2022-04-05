@@ -16,7 +16,7 @@ pub struct MaqFloor {
 impl Drawable for MaqFloor {
     fn draw(&self){
         //loop variables
-        let tile_wid = screen_width() / self.wid as f32;
+        let tile_wid = (screen_width()-30.0) / self.wid as f32;
         let tile_len = screen_height() / self.len as f32;
         //loop params
         let mut x = 0;
