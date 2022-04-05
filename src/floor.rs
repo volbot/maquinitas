@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 use crate::display::Drawable;
 use crate::inputs::Clickable;
+use crate::maqs::Maq;
 
 use crate::tiles::*;
 

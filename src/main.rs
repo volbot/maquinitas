@@ -6,6 +6,7 @@ pub mod display;
 pub mod tiles;
 pub mod inputs;
 pub mod pheno;
+pub mod maqs;
 
 use crate::display::Drawable;
 

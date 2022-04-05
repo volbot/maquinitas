@@ -3,7 +3,8 @@ use macroquad::prelude::*;
 use crate::display::Drawable;
 use crate::inputs::Clickable;
 
-use crate::tiles::get_tile;
+use crate::tiles::*;
+use crate::maqs::*;
 
 //Toolbar for selecting Maquinitas
 // currently only contains an offset from the start
@@ -22,15 +23,10 @@ impl Drawable for Toolbar {
         draw_rectangle(x+screen_width()*0.0275, y + screen_width()*0.02, screen_width()*0.02, screen_width()*0.02, BLACK);
         y -= screen_width()*0.03;
         let mut tile = get_tile(1);
-        let mut tileCount = -1;
         while i < (n as u8) {
             tile = get_tile(i);
-            if tile.name == "Block" {
-                if tileCount == -1 {
-                    tileCount = i as i8;
-                } else {
-                    tile = get_tile(0);
-                }
+            if i > tile_count() as u8 {
+                tile = get_maq_tile(i-tile_count() as u8);
             }
             draw_rectangle(x+screen_width()*0.005, y+screen_width()*0.005, screen_width()*0.04, screen_width()*0.04, tile.color);
             i+=1;
