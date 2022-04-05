@@ -8,7 +8,7 @@ pub mod inputs;
 
 use crate::display::Drawable;
 
-#[macroquad::main("BasicShapes")]
+#[macroquad::main("Maquinitas")]
 async fn main() {
 
     //game vars

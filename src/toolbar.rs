@@ -18,6 +18,9 @@ impl Drawable for Toolbar {
         let mut i = 0;
         let x = screen_width()*0.95;
         let mut y = screen_height() - screen_width()*0.05;
+        draw_rectangle(x+screen_width()*0.00225, y + screen_width()*0.02, screen_width()*0.02, screen_width()*0.02, BLACK); 
+        draw_rectangle(x+screen_width()*0.0275, y + screen_width()*0.02, screen_width()*0.02, screen_width()*0.02, BLACK);
+        y -= screen_width()*0.03;
         while i < (n as u8) {
             draw_rectangle(x+screen_width()*0.005, y+screen_width()*0.005, screen_width()*0.04, screen_width()*0.04, get_tile(i).color);
             i+=1;
