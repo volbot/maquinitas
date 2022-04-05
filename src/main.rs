@@ -4,6 +4,8 @@ pub mod floor;
 pub mod display;
 pub mod maqs;
 
+use crate::display::Drawable;
+
 #[macroquad::main("BasicShapes")]
 async fn main() {
 
@@ -43,12 +45,17 @@ async fn main() {
         y=0;
         x+=1;
     }
+
+    //MAIN GAME LOOP
     loop {
         //clear screen to red
         clear_background(RED);
 
         //draw the floor
-        display::draw(game_floor.clone());
+        game_floor.draw();
+
+        //query actions
+        
 
         //wait for the next frame to arrive before looping again
         next_frame().await;
