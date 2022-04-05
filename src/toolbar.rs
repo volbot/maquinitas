@@ -3,7 +3,7 @@ use macroquad::prelude::*;
 use crate::display::Drawable;
 use crate::inputs::Clickable;
 
-use crate::maqs::get_maq;
+use crate::tiles::get_tile;
 
 //Toolbar for selecting Maquinitas
 // currently only contains an offset from the start
@@ -14,21 +14,21 @@ pub struct Toolbar {
 }
 impl Drawable for Toolbar {
     fn draw(&self){
-        let n = screen_height() / (30.0 as f32);
+        let n = screen_height() / (screen_width()*0.05 as f32);
         let mut i = 0;
-        let x = screen_width() - 30.0;
-        let mut y = screen_height() - 30.0;
+        let x = screen_width()*0.95;
+        let mut y = screen_height() - screen_width()*0.05;
         while i < (n as u8) {
-            draw_rectangle(x+2.0, y+2.0, 26.0, 26.0, get_maq(i).color);
+            draw_rectangle(x+screen_width()*0.005, y+screen_width()*0.005, screen_width()*0.04, screen_width()*0.04, get_tile(i).color);
             i+=1;
-            y-=30.0;
+            y-=screen_width()*0.05;
         }
     }
 }
 impl Clickable for Toolbar {
     fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16) {
         if mouse==MouseButton::Left {
-            let n = (screen_height() - pos.1) / 30.0;
+            let n = (screen_height() - pos.1) / (screen_width()*0.05);
             self.selected = n as i16;    
         }
     }

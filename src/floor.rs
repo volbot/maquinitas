@@ -3,7 +3,7 @@ use macroquad::prelude::*;
 use crate::display::Drawable;
 use crate::inputs::Clickable;
 
-use crate::maqs::get_maq;
+use crate::tiles::get_tile;
 
 //Maquinita Floor (the map)
 // len + wid are length and width
@@ -18,7 +18,7 @@ pub struct MaqFloor {
 impl Drawable for MaqFloor {
     fn draw(&self){
         //loop variables
-        let tile_wid = (screen_width()-30.0) / self.wid as f32;
+        let tile_wid = (screen_width()*0.95) / self.wid as f32;
         let tile_len = screen_height() / self.len as f32;
         //loop params
         let mut x = 0;
@@ -28,9 +28,9 @@ impl Drawable for MaqFloor {
         while x < self.wid {
             while y < self.len {
                 //get machine filling [x][y]
-                let maq = get_maq(states[(x * self.wid)+y]);
+                let tile = get_tile(states[(x * self.wid)+y]);
                 //draw its color at [x][y]
-                draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, maq.color);
+                draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, tile.color);
                 
                 y+=1;
             }
@@ -43,7 +43,7 @@ impl Drawable for MaqFloor {
 impl Clickable for MaqFloor {
     fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16){
         let (x, y) = (
-            pos.0/(screen_width()-30.0)*self.wid as f32,
+            pos.0/(screen_width()*0.95)*self.wid as f32,
             pos.1/screen_height()*self.len as f32
             );
         if mouse == MouseButton::Left {
