@@ -5,6 +5,7 @@ pub mod toolbar;
 pub mod display;
 pub mod tiles;
 pub mod inputs;
+pub mod pheno;
 
 use crate::display::Drawable;
 
@@ -24,8 +25,11 @@ async fn main() {
         game_floor.draw();
         toolbar.draw();
 
-        //query actions
+        //query inputs
         inputs::parse_main(&mut toolbar, &mut game_floor);
+
+        //query phenomena
+        pheno::advance(&mut game_floor);
 
         //wait for the next frame to arrive before looping again
         next_frame().await;

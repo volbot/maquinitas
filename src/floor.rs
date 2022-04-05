@@ -1,9 +1,10 @@
 use macroquad::prelude::*;
+use std::collections::HashMap;
 
 use crate::display::Drawable;
 use crate::inputs::Clickable;
 
-use crate::tiles::get_tile;
+use crate::tiles::*;
 
 //Maquinita Floor (the map)
 // len + wid are length and width
@@ -13,6 +14,7 @@ pub struct MaqFloor {
     pub len: usize,
     pub wid: usize,
     pub states: Box<[u8]>,
+    pub maqs: HashMap<(usize, usize), (usize, usize)>,
 }
 
 impl Drawable for MaqFloor {
@@ -56,7 +58,17 @@ impl Clickable for MaqFloor {
 
 impl MaqFloor{
     pub fn place(&mut self, id: u8, pos: (usize, usize)){
-        self.states[pos.0*self.wid+pos.1] = id;
+        if self.states[pos.0*self.wid+pos.1] as usize > tile_count(){
+            self.maqs.remove(&pos);
+        }
+        if self.states[pos.0*self.wid+pos.1] != id{
+            self.states[pos.0*self.wid+pos.1] = id;
+            if id as usize > tile_count() {
+
+            } else if id as usize >= tile_count() {
+                self.maqs.insert(pos, pos);
+            }
+        }
     }
 }
 
@@ -73,6 +85,7 @@ pub fn init_floor() -> MaqFloor {
         len: L,
         wid: W,
         states: Box::new(states),
+        maqs: HashMap::new(),
     };
 
     //return the floor
