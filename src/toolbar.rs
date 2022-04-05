@@ -1,6 +1,8 @@
 use macroquad::prelude::*;
 
 use crate::display::Drawable;
+use crate::inputs::Clickable;
+
 use crate::maqs::get_maq;
 
 //Toolbar for selecting Maquinitas
@@ -8,6 +10,7 @@ use crate::maqs::get_maq;
 #[derive(Debug, Clone, Copy)]
 pub struct Toolbar {
     pub offset: u16,
+    pub selected: i16,
 }
 impl Drawable for Toolbar {
     fn draw(&self){
@@ -22,10 +25,19 @@ impl Drawable for Toolbar {
         }
     }
 }
+impl Clickable for Toolbar {
+    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16) {
+        if mouse==MouseButton::Left {
+            let n = (screen_height() - pos.1) / 30.0;
+            self.selected = n as i16;    
+        }
+    }
+}
 
 pub fn init_toolbar() -> Toolbar {
     let toolbar = Toolbar {
         offset: 0,
+        selected: -1,
     };
     toolbar
 }

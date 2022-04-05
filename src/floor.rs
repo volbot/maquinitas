@@ -1,6 +1,8 @@
 use macroquad::prelude::*;
 
 use crate::display::Drawable;
+use crate::inputs::Clickable;
+
 use crate::maqs::get_maq;
 
 //Maquinita Floor (the map)
@@ -35,6 +37,26 @@ impl Drawable for MaqFloor {
             y=0;
             x+=1;
         }
+    }
+}
+
+impl Clickable for MaqFloor {
+    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16){
+        let (x, y) = (
+            pos.0/(screen_width()-30.0)*self.wid as f32,
+            pos.1/screen_height()*self.len as f32
+            );
+        if mouse == MouseButton::Left {
+            if dat >= 0{
+                self.place(dat as u8, (x as usize,y as usize));
+            }
+        }
+    }
+}
+
+impl MaqFloor{
+    pub fn place(&mut self, id: u8, pos: (usize, usize)){
+        self.states[pos.0*self.wid+pos.1] = id;
     }
 }
 

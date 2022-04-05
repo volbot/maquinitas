@@ -4,6 +4,7 @@ pub mod floor;
 pub mod toolbar;
 pub mod display;
 pub mod maqs;
+pub mod inputs;
 
 use crate::display::Drawable;
 
@@ -12,7 +13,7 @@ async fn main() {
 
     //game vars
     let mut game_floor = floor::init_floor();
-    let toolbar = toolbar::init_toolbar();
+    let mut toolbar = toolbar::init_toolbar();
 
     //vars for filling floor
     let mut x: usize = 0;
@@ -58,7 +59,7 @@ async fn main() {
         toolbar.draw();
 
         //query actions
-        
+        inputs::parse_main(&mut toolbar, &mut game_floor);
 
         //wait for the next frame to arrive before looping again
         next_frame().await;
