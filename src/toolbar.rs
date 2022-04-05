@@ -25,7 +25,7 @@ impl Drawable for Toolbar {
         let mut tile = get_tile(1);
         while i < (n as u8) {
             tile = get_tile(i);
-            if i > tile_count() as u8 {
+            if i >= tile_count() as u8 {
                 tile = get_maq_tile(i-tile_count() as u8);
             }
             draw_rectangle(x+screen_width()*0.005, y+screen_width()*0.005, screen_width()*0.04, screen_width()*0.04, tile.color);

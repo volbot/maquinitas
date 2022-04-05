@@ -2,21 +2,27 @@ use macroquad::prelude::*;
 use crate::floor::MaqFloor;
 use crate::tiles::Tile;
 
-pub trait Maq {
-    fn work(&mut self, floor: &mut MaqFloor, pos: (usize, usize));
+pub trait Worker {
+    fn work(&mut self, floor: &mut MaqFloor, pos:(usize, usize));
+}
+
+#[derive(Debug,Clone,Copy)]
+pub struct Maq {
+    pub counter: u8,
+    pub enact: u8,
+    pub id: u8,
 }
 pub struct Mover {
-    counter: u8,
-    right: bool,
+    pub maq: Maq,
+    pub right: bool,
 }
-impl Maq for Mover {
+impl Worker for Mover {
     fn work(&mut self, floor: &mut MaqFloor, pos: (usize, usize)) {
-        if self.counter<10 {
-            println!("yea");
-            self.counter = self.counter+1;
+        if self.maq.counter<self.maq.enact {
+            self.maq.counter+=1;
+            floor.maqs.insert(pos,self.maq);
         } else {
-            println!("pls");
-            self.counter=0;
+            self.maq.counter=0;
             let target1 = if self.right {
                 (pos.0+1)*floor.wid+pos.1
             } else {
@@ -30,6 +36,7 @@ impl Maq for Mover {
             let temp = floor.states[target2].clone();
             floor.states[target2] = floor.states[target1].clone();
             floor.states[target1] = temp;
+            floor.maqs.insert(pos,self.maq);
         }
     }
 }
@@ -42,10 +49,6 @@ pub fn get_maq_tile(id: u8) -> Tile {
     tile
 }
 
-pub fn get_maq(id: u8) -> impl Maq {
-    let maq = Mover {
-                counter: 9,
-                right: true,   
-            };
-    maq
+pub fn get_maq(id: u8) {
+    
 }

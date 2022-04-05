@@ -15,7 +15,7 @@ pub struct MaqFloor {
     pub len: usize,
     pub wid: usize,
     pub states: Box<[u8]>,
-    pub maqs: HashMap<(usize, usize), (usize, usize)>,
+    pub maqs: HashMap<(usize, usize), Maq>,
 }
 
 impl Drawable for MaqFloor {
@@ -69,7 +69,11 @@ impl MaqFloor{
             if id as usize > tile_count() {
 
             } else if id as usize >= tile_count() {
-                self.maqs.insert(pos, pos);
+                self.maqs.insert(pos, Maq{
+                    counter: 0,
+                    enact: 10,
+                    id: id,
+                });
             }
         }
     }
