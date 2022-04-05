@@ -57,10 +57,12 @@ impl Clickable for MaqFloor {
 }
 
 impl MaqFloor{
+    //Place function
+    // id: Tile/Maq ID to place
+    // pos: where
+    //This function has the functions for placing an object, and additionally,
+    //it adds Maqs to the entity list.
     pub fn place(&mut self, id: u8, pos: (usize, usize)){
-        if self.states[pos.0*self.wid+pos.1] as usize > tile_count(){
-            self.maqs.remove(&pos);
-        }
         if self.states[pos.0*self.wid+pos.1] != id{
             self.states[pos.0*self.wid+pos.1] = id;
             if id as usize > tile_count() {
