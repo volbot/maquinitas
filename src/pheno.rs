@@ -20,7 +20,11 @@ pub fn enact(floor: &mut MaqFloor, pos: (usize, usize)) {
             Some(x) => {
                 let mut mover = Mover {
                     maq: *x,
-                    right: true,
+                    right: if id == tc+1 {
+                        false
+                    } else {
+                        true
+                    },
                 };
                 mover.work(floor,pos);
             }

@@ -43,12 +43,16 @@ impl Worker for Mover {
 
 pub fn get_maq_tile(id: u8) -> Tile {
     let tile = Tile {
-        name: "Maq",
-        color: RED,
+        name: match id {
+            0 => "Mover (H)",
+            1 => "Mover (V)",
+            _ => "Block",
+        },
+        color: match id {
+            0 => ORANGE,
+            1 => PURPLE,
+            _ => GRAY,
+        },
     };
     tile
-}
-
-pub fn get_maq(id: u8) {
-    
 }

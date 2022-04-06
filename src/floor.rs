@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use crate::display::Drawable;
 use crate::inputs::Clickable;
-use crate::maqs::Maq;
+use crate::maqs::*;
 
 use crate::tiles::*;
 
@@ -31,7 +31,12 @@ impl Drawable for MaqFloor {
         while x < self.wid {
             while y < self.len {
                 //get machine filling [x][y]
-                let tile = get_tile(states[(x * self.wid)+y]);
+                let tileID = states[(x * self.wid)+y];
+                let tile = if tileID < tile_count() as u8 {
+                    get_tile(tileID)
+                } else {
+                    get_maq_tile(tileID-tile_count() as u8)
+                };
                 //draw its color at [x][y]
                 draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, tile.color);
                 
@@ -66,12 +71,12 @@ impl MaqFloor{
     pub fn place(&mut self, id: u8, pos: (usize, usize)){
         if self.states[pos.0*self.wid+pos.1] != id{
             self.states[pos.0*self.wid+pos.1] = id;
-            if id as usize > tile_count() {
+            if id as usize > tile_count()+1 {
 
             } else if id as usize >= tile_count() {
                 self.maqs.insert(pos, Maq{
                     counter: 0,
-                    enact: 10,
+                    enact: 30,
                     id: id,
                 });
             }
