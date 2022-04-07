@@ -18,15 +18,26 @@ pub fn enact(floor: &mut MaqFloor, pos: (usize, usize)) {
     } else {
         match floor.maqs.get(&pos) {
             Some(x) => {
-                let mut mover = Mover {
-                    maq: *x,
-                    right: if id == tc+1 {
-                        false
-                    } else {
-                        true
-                    },
+                let mut worker: Box<dyn Worker> = if id == tc || id == tc+1 {
+                    Box::new(Mover {
+                        maq: *x,
+                        right: if id == tc+1 {
+                            false
+                        } else {
+                            true
+                        }    
+                    })
+                } else {
+                    Box::new(Walker {
+                        maq: *x,
+                        right: if id==tc+3 {
+                            false
+                        } else {
+                            true
+                        }
+                    })
                 };
-                mover.work(floor,pos);
+                worker.work(floor,pos);
             }
             None => return
         }   

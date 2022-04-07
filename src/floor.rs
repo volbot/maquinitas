@@ -69,16 +69,50 @@ impl MaqFloor{
     //This function has the functions for placing an object, and additionally,
     //it adds Maqs to the entity list.
     pub fn place(&mut self, id: u8, pos: (usize, usize)){
-        if self.states[pos.0*self.wid+pos.1] != id{
+        let orig = self.states[pos.0*self.wid+pos.1];
+        if orig != id{
             self.states[pos.0*self.wid+pos.1] = id;
-            if id as usize > tile_count()+1 {
-
+            if id as usize > tile_count()+3 {
+                return
             } else if id as usize >= tile_count() {
                 self.maqs.insert(pos, Maq{
                     counter: 0,
                     enact: 30,
                     id: id,
                 });
+            }
+        }
+    }
+
+    pub fn shift(&mut self, pos_in: (usize, usize), right: bool, dist: i16) {
+        let mut i = 0;
+        let mut pos_out = pos_in.clone();
+        while i < dist {
+            let mut refer = if right {&mut pos_out.0} else {&mut pos_out.1};
+            *refer += 1;
+            if right{
+                if *refer >= self.wid {
+                    return
+                }
+            } else {
+                if *refer >= self.len {
+                    return
+                }
+            }
+            if *refer < 0 {
+                return
+            }
+            i += 1;
+            let temp = self.states[pos_in.0*self.wid+pos_in.1];
+            let temp1 = self.states[pos_out.0*self.wid+pos_out.1];
+            self.states[pos_in.0*self.wid+pos_in.1] = temp1;
+            self.states[pos_out.0*self.wid+pos_out.1] = temp;
+            match self.maqs.get(&pos_in) {
+                Some(x) => {
+                    self.maqs.insert(pos_out,*x);
+                    self.maqs.remove(&pos_in);
+                },
+                None => return         
             }
         }
     }

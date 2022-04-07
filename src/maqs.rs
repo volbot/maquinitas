@@ -16,6 +16,10 @@ pub struct Mover {
     pub maq: Maq,
     pub right: bool,
 }
+pub struct Walker {
+    pub maq: Maq,
+    pub right: bool,
+}
 impl Worker for Mover {
     fn work(&mut self, floor: &mut MaqFloor, pos: (usize, usize)) {
         if self.maq.counter<self.maq.enact {
@@ -41,16 +45,33 @@ impl Worker for Mover {
     }
 }
 
+impl Worker for Walker {
+    fn work(&mut self, floor: &mut MaqFloor, pos: (usize, usize)) {
+        if self.maq.counter<self.maq.enact {
+            self.maq.counter+=1;
+            floor.maqs.insert(pos,self.maq);
+        } else {
+            self.maq.counter = 0;
+            floor.maqs.insert(pos,self.maq);
+            floor.shift(pos, self.right, 1);
+        }
+    }
+}
+
 pub fn get_maq_tile(id: u8) -> Tile {
     let tile = Tile {
         name: match id {
             0 => "Mover (H)",
             1 => "Mover (V)",
+            2 => "Walker (H)",
+            3 => "Walker (V)",
             _ => "Block",
         },
         color: match id {
             0 => ORANGE,
             1 => PURPLE,
+            2 => RED,
+            3 => YELLOW,
             _ => GRAY,
         },
     };
