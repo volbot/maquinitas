@@ -78,7 +78,7 @@ impl MaqFloor{
                 self.maqs.insert(pos, Maq{
                     counter: 0,
                     enact: match id as usize-tile_count() {
-                        2|3|4|5 => 20,
+                        2|3|4|5 => 30,
                         _ => 30,
                     },
                     id: id,
@@ -116,7 +116,6 @@ impl MaqFloor{
             let temp = self.states[pos_out.0*self.wid+pos_out.1];
             let tile = if temp<tile_count() as u8 {get_tile(temp)} else {get_maq_tile(temp-tile_count()as u8)};
             if !tile.passable {
-                println!("TILEID {} NOT PASSABLE",temp);
                 return
             } else {
             self.swap(pos_in,pos_out);
