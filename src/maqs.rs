@@ -18,7 +18,7 @@ pub struct Mover {
 }
 pub struct Walker {
     pub maq: Maq,
-    pub right: bool,
+    pub dir: u8,
 }
 impl Worker for Mover {
     fn work(&mut self, floor: &mut MaqFloor, pos: (usize, usize)) {
@@ -53,7 +53,12 @@ impl Worker for Walker {
         } else {
             self.maq.counter = 0;
             floor.maqs.insert(pos,self.maq);
-            floor.shift(pos, self.right, 1);
+            floor.shift(pos, self.dir==0 || self.dir == 2, 
+                if self.dir==0 || self.dir==1 {
+                    1
+                } else {
+                    -1
+                });
         }
     }
 }
@@ -63,8 +68,10 @@ pub fn get_maq_tile(id: u8) -> Tile {
         name: match id {
             0 => "Mover (H)",
             1 => "Mover (V)",
-            2 => "Walker (H)",
-            3 => "Walker (V)",
+            2 => "Walker (R)",
+            3 => "Walker (D)",
+            4 => "Walker (L)",
+            5 => "Walker (U)",
             _ => "Block",
         },
         color: match id {
@@ -72,6 +79,8 @@ pub fn get_maq_tile(id: u8) -> Tile {
             1 => PURPLE,
             2 => RED,
             3 => YELLOW,
+            4 => RED,
+            5 => YELLOW,
             _ => GRAY,
         },
     };

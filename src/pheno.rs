@@ -30,15 +30,11 @@ pub fn enact(floor: &mut MaqFloor, pos: (usize, usize)) {
                 } else {
                     Box::new(Walker {
                         maq: *x,
-                        right: if id==tc+3 {
-                            false
-                        } else {
-                            true
-                        }
-                    })
+                        dir: id-6,
+                        })
                 };
                 worker.work(floor,pos);
-            }
+            },
             None => return
         }   
     }

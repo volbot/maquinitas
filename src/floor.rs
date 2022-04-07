@@ -72,7 +72,7 @@ impl MaqFloor{
         let orig = self.states[pos.0*self.wid+pos.1];
         if orig != id{
             self.states[pos.0*self.wid+pos.1] = id;
-            if id as usize > tile_count()+3 {
+            if id as usize > tile_count()+5 {
                 return
             } else if id as usize >= tile_count() {
                 self.maqs.insert(pos, Maq{
@@ -84,12 +84,16 @@ impl MaqFloor{
         }
     }
 
+    //Shift function
+    // pos_in: starting position
+    // right: true go right, false go down
+    // dist: distance to go. negatives for backwards
     pub fn shift(&mut self, pos_in: (usize, usize), right: bool, dist: i16) {
         let mut i = 0;
         let mut pos_out = pos_in.clone();
-        while i < dist {
+        while i != dist {
             let mut refer = if right {&mut pos_out.0} else {&mut pos_out.1};
-            *refer += 1;
+            *refer = if dist > 0 {*refer+1 as usize} else {*refer-1 as usize} ;
             if right{
                 if *refer >= self.wid {
                     return
@@ -102,7 +106,7 @@ impl MaqFloor{
             if *refer < 0 {
                 return
             }
-            i += 1;
+            i += if dist > 0 {1} else {-1};
             let temp = self.states[pos_in.0*self.wid+pos_in.1];
             let temp1 = self.states[pos_out.0*self.wid+pos_out.1];
             self.states[pos_in.0*self.wid+pos_in.1] = temp1;
