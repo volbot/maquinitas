@@ -15,16 +15,15 @@ pub struct Toolbar {
 }
 impl Drawable for Toolbar {
     fn draw(&self){
-        let mut i: u8 = (self.offset as u8 * (screen_height() / (screen_width()*0.05)) as u8);
+        let mut i: u8 = self.offset as u8 * (screen_height() / (screen_width()*0.05)) as u8;
         let n = ((screen_height() / (screen_width()*0.05 as f32)) as i16)+i as i16; 
         let x = screen_width()*0.95;
         let mut y = screen_height() - screen_width()*0.05;
         draw_rectangle(x+screen_width()*0.00225, y + screen_width()*0.02, screen_width()*0.02, screen_width()*0.02, BLACK); 
         draw_rectangle(x+screen_width()*0.0275, y + screen_width()*0.02, screen_width()*0.02, screen_width()*0.02, BLACK);
         y -= screen_width()*0.03;
-        let mut tile = get_tile(1);
         while i < (n as u8) {
-            tile = get_tile(i);
+            let mut tile = get_tile(i);
             if i >= tile_count() as u8 {
                 tile = get_maq_tile(i-tile_count() as u8);
             }
@@ -35,7 +34,7 @@ impl Drawable for Toolbar {
     }
 }
 impl Clickable for Toolbar {
-    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16) {
+    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), _dat: i16) {
         if mouse==MouseButton::Left {
             if pos.1>screen_height()*0.975 {
                 if pos.0>screen_width()*0.975 {

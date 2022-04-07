@@ -5,6 +5,7 @@ use macroquad::prelude::*;
 pub struct Tile {
     pub name: &'static str,
     pub color: Color,
+    pub passable: bool
 }
 
 //returns a Tile for a given TileID
@@ -21,12 +22,16 @@ pub fn get_tile(id: u8) -> Tile {
             1 => GREEN,
             2 => BLUE,
             _ => GRAY,
+        },
+        passable: match id {
+            0|1|2 => true,
+            _ => false,
         }
     };
     tile
 }
 
-const tc: usize = 4;
+const TC: usize = 4;
 pub const fn tile_count() -> usize {
-    tc
+    TC
 }

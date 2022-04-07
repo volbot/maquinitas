@@ -31,11 +31,11 @@ impl Drawable for MaqFloor {
         while x < self.wid {
             while y < self.len {
                 //get machine filling [x][y]
-                let tileID = states[(x * self.wid)+y];
-                let tile = if tileID < tile_count() as u8 {
-                    get_tile(tileID)
+                let tile_id = states[(x * self.wid)+y];
+                let tile = if tile_id < tile_count() as u8 {
+                    get_tile(tile_id)
                 } else {
-                    get_maq_tile(tileID-tile_count() as u8)
+                    get_maq_tile(tile_id-tile_count() as u8)
                 };
                 //draw its color at [x][y]
                 draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, tile.color);
@@ -77,7 +77,10 @@ impl MaqFloor{
             } else if id as usize >= tile_count() {
                 self.maqs.insert(pos, Maq{
                     counter: 0,
-                    enact: 30,
+                    enact: match id as usize-tile_count() {
+                        2|3|4|5 => 20,
+                        _ => 30,
+                    },
                     id: id,
                 });
             }
@@ -92,8 +95,14 @@ impl MaqFloor{
         let mut i = 0;
         let mut pos_out = pos_in.clone();
         while i != dist {
-            let mut refer = if right {&mut pos_out.0} else {&mut pos_out.1};
-            *refer = if dist > 0 {*refer+1 as usize} else {*refer-1 as usize} ;
+            let refer = if right {&mut pos_out.0} else {&mut pos_out.1};
+            *refer = if dist > 0 {*refer+1 as usize} else {
+                if *refer<=0 {
+                    return
+                } else {
+                    *refer-1 as usize
+                }
+            };
             if right{
                 if *refer >= self.wid {
                     return
@@ -103,20 +112,45 @@ impl MaqFloor{
                     return
                 }
             }
-            if *refer < 0 {
-                return
-            }
             i += if dist > 0 {1} else {-1};
-            let temp = self.states[pos_in.0*self.wid+pos_in.1];
-            let temp1 = self.states[pos_out.0*self.wid+pos_out.1];
-            self.states[pos_in.0*self.wid+pos_in.1] = temp1;
-            self.states[pos_out.0*self.wid+pos_out.1] = temp;
-            match self.maqs.get(&pos_in) {
-                Some(x) => {
-                    self.maqs.insert(pos_out,*x);
-                    self.maqs.remove(&pos_in);
-                },
-                None => return         
+            let temp = self.states[pos_out.0*self.wid+pos_out.1];
+            let tile = if temp<tile_count() as u8 {get_tile(temp)} else {get_maq_tile(temp-tile_count()as u8)};
+            if !tile.passable {
+                println!("TILEID {} NOT PASSABLE",temp);
+                return
+            } else {
+            self.swap(pos_in,pos_out);
+            }
+        }
+    }
+    
+    //Swap function
+    // Swaps the tiles at two positions, swapping their Maqs as well.
+    pub fn swap(&mut self, pos_1: (usize, usize), pos_2: (usize, usize)) {
+        if pos_1.0>=self.wid||pos_2.0>=self.wid||pos_1.1>=self.len||pos_2.1>=self.len {
+            return
+        }
+        let temp1 = self.states[pos_1.0*self.wid+pos_1.1];
+        let temp2 = self.states[pos_2.0*self.wid+pos_2.1];
+        self.states[pos_1.0*self.wid+pos_1.1] = temp2;
+        self.states[pos_2.0*self.wid+pos_2.1] = temp1;
+        
+        let maq_temp1 = self.maqs.get(&pos_1).cloned();
+        let maq_temp2 = self.maqs.get(&pos_2).cloned();
+        match maq_temp1 {
+            Some(maq1) => {
+                self.maqs.insert(pos_2,maq1);
+            },
+            None => {
+                self.maqs.remove(&pos_2);
+            }
+        }
+        match maq_temp2 {
+            Some(maq2) => {
+                self.maqs.insert(pos_1,maq2);
+            },
+            None => {
+                self.maqs.remove(&pos_1);
             }
         }
     }

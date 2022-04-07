@@ -28,18 +28,28 @@ impl Worker for Mover {
         } else {
             self.maq.counter=0;
             let target1 = if self.right {
-                (pos.0+1)*floor.wid+pos.1
+                if pos.0==floor.wid {
+                    return
+                }
+                (pos.0+1,pos.1)
             } else {
-                pos.0*floor.wid+(pos.1+1)
+                if pos.1==floor.len {
+                    return
+                }
+                (pos.0,pos.1+1)
             };
             let target2 = if self.right {
-                (pos.0-1)*floor.wid+pos.1
+                if pos.0==0 {
+                    return
+                }
+                (pos.0-1,pos.1)
             } else {
-                pos.0*floor.wid+(pos.1-1)
+                if pos.1==0 {
+                    return
+                }
+                (pos.0,pos.1-1)
             };
-            let temp = floor.states[target2].clone();
-            floor.states[target2] = floor.states[target1].clone();
-            floor.states[target1] = temp;
+            floor.swap(target1,target2);
             floor.maqs.insert(pos,self.maq);
         }
     }
@@ -77,12 +87,15 @@ pub fn get_maq_tile(id: u8) -> Tile {
         color: match id {
             0 => ORANGE,
             1 => PURPLE,
-            2 => RED,
-            3 => YELLOW,
-            4 => RED,
-            5 => YELLOW,
+            2|4 => RED,
+            3|5 => YELLOW,
             _ => GRAY,
         },
+        passable: match id {
+            0|1 => false,
+            2|3|4|5 => true,
+            _ => false,
+        }
     };
     tile
 }
