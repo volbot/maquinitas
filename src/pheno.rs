@@ -27,11 +27,21 @@ pub fn enact(floor: &mut MaqFloor, pos: (usize, usize)) {
                             true
                         }    
                     })
-                } else {
+                } else if id >= TC+2 && id < TC+6 {
                     Box::new(Walker {
                         maq: *x,
                         dir: id-6,
-                        })
+                    })
+                } else if id >= TC+6 && id < TC+10 {
+                    Box::new(Rotator {
+                        maq: *x,
+                        dir: id-10,
+                    })
+                } else {
+                    Box::new(Mover {
+                        maq: *x,
+                        right: true,
+                    })
                 };
                 worker.work(floor,pos);
             },

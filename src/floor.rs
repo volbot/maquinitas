@@ -72,13 +72,13 @@ impl MaqFloor{
         let orig = self.states[pos.0*self.wid+pos.1];
         if orig != id{
             self.states[pos.0*self.wid+pos.1] = id;
-            if id as usize > tile_count()+5 {
+            if id as usize >= tile_count()+10 {
                 return
             } else if id as usize >= tile_count() {
                 self.maqs.insert(pos, Maq{
                     counter: 0,
                     enact: match id as usize-tile_count() {
-                        2|3|4|5 => 30,
+                        2|3|4|5|6|7|8|9 => 30,
                         _ => 30,
                     },
                     id: id,
