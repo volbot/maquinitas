@@ -78,7 +78,8 @@ impl MaqFloor{
                 self.maqs.insert(pos, Maq{
                     counter: 0,
                     enact: match id as usize-tile_count() {
-                        2|3|4|5|6|7|8|9 => 30,
+                        2|3|4|5 => 10,
+                        6|7|8|9 => 10,
                         _ => 30,
                     },
                     id: id,
@@ -131,11 +132,13 @@ impl MaqFloor{
         }
         let temp1 = self.states[pos_1.0*self.wid+pos_1.1];
         let temp2 = self.states[pos_2.0*self.wid+pos_2.1];
+
         self.states[pos_1.0*self.wid+pos_1.1] = temp2;
         self.states[pos_2.0*self.wid+pos_2.1] = temp1;
         
         let maq_temp1 = self.maqs.get(&pos_1).cloned();
         let maq_temp2 = self.maqs.get(&pos_2).cloned();
+
         match maq_temp1 {
             Some(maq1) => {
                 self.maqs.insert(pos_2,maq1);

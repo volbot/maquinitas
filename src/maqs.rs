@@ -106,10 +106,12 @@ impl Worker for Rotator {
                         9 => 6,
                         _ => return,
                     };
+                    let counter_new = x.counter;
+                    let enact_new = x.enact;
                     floor.place(new_id, (pos_new.0 as usize,pos_new.1 as usize));
                     floor.maqs.insert((pos_new.0 as usize, pos_new.1 as usize),Maq{
-                        counter: 0,
-                        enact: 30,
+                        counter: counter_new,
+                        enact: enact_new,
                         id: new_id
                     });
                 }
