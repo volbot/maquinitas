@@ -147,7 +147,7 @@ pub fn get_maq_tile(id: u8) -> Tile {
         },
         passable: match id {
             0|1|6|7|8|9 => false,
-            2|3|4|5 => true,
+            2|3|4|5 => false,
             _ => false,
         }
     };

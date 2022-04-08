@@ -78,6 +78,7 @@ impl MaqFloor{
                 self.maqs.insert(pos, Maq{
                     counter: 0,
                     enact: match id as usize-tile_count() {
+                        0|1 => 15,
                         2|3|4|5 => 10,
                         6|7|8|9 => 10,
                         _ => 30,
