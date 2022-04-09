@@ -14,7 +14,7 @@ use crate::tiles::*;
 pub struct MaqFloor {
     pub len: usize,
     pub wid: usize,
-    pub states: Box<[u8]>,
+    pub states: Box<[usize]>,
     pub maqs: HashMap<(usize, usize), Maq>,
 }
 
@@ -32,10 +32,10 @@ impl Drawable for MaqFloor {
             while y < self.len {
                 //get machine filling [x][y]
                 let tile_id = states[(x * self.wid)+y];
-                let tile = if tile_id < tile_count() as u8 {
+                let tile = if tile_id < tile_count() {
                     get_tile(tile_id)
                 } else {
-                    get_maq_tile(tile_id-tile_count() as u8)
+                    get_maq_tile(tile_id-tile_count())
                 };
                 //draw its color at [x][y]
                 draw_rectangle(tile_wid*(x as f32), tile_len*(y as f32), tile_wid, tile_len, tile.color);
@@ -49,14 +49,14 @@ impl Drawable for MaqFloor {
 }
 
 impl Clickable for MaqFloor {
-    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16){
+    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: isize){
         let (x, y) = (
             pos.0/(screen_width()*0.95)*self.wid as f32,
             pos.1/screen_height()*self.len as f32
             );
         if mouse == MouseButton::Left {
             if dat >= 0{
-                self.place(dat as u8, (x as usize,y as usize));
+                self.place(dat as usize, (x as usize,y as usize));
             }
         }
     }
@@ -68,7 +68,7 @@ impl MaqFloor{
     // pos: where
     //This function has the functions for placing an object, and additionally,
     //it adds Maqs to the entity list.
-    pub fn place(&mut self, id: u8, pos: (usize, usize)){
+    pub fn place(&mut self, id: usize, pos: (usize, usize)){
         let orig = self.states[pos.0*self.wid+pos.1];
         if orig != id{
             self.states[pos.0*self.wid+pos.1] = id;
@@ -116,7 +116,7 @@ impl MaqFloor{
             }
             i += if dist > 0 {1} else {-1};
             let temp = self.states[pos_out.0*self.wid+pos_out.1];
-            let tile = if temp<tile_count() as u8 {get_tile(temp)} else {get_maq_tile(temp-tile_count()as u8)};
+            let tile = if temp<tile_count() {get_tile(temp)} else {get_maq_tile(temp-tile_count())};
             if !tile.passable {
                 return
             } else {

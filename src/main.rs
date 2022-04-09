@@ -31,6 +31,7 @@ async fn main() {
 
         //query phenomena
         pheno::advance(&mut game_floor);
+        pheno::pass_time(&mut game_floor);
 
         //wait for the next frame to arrive before looping again
         next_frame().await;

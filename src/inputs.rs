@@ -9,7 +9,7 @@ pub trait Clickable {
     // mouse: MouseButton enum
     // pos: Tuple with the x and y
     // dat: any data that needs to get passed to the clicked entity
-    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: i16);
+    fn click(&mut self, mouse: MouseButton, pos: (f32, f32), dat: isize);
 }
 
 //Main parse loop, another loop will run if a non-main menu is active

@@ -10,7 +10,7 @@ pub trait Worker {
 pub struct Maq {
     pub counter: u8,
     pub enact: u8,
-    pub id: u8,
+    pub id: usize,
 }
 pub struct Mover {
     pub maq: Maq,
@@ -131,7 +131,7 @@ impl Worker for Rotator {
 
 //Returns a Tile for a given Maq.
 // id is the MaqID (subtract tilecount!)
-pub fn get_maq_tile(id: u8) -> Tile {
+pub fn get_maq_tile(id: usize) -> Tile {
     let tile = Tile {
         name: match id {
             0 => "Mover (H)",
@@ -159,7 +159,8 @@ pub fn get_maq_tile(id: u8) -> Tile {
             0|1|6|7|8|9 => false,
             2|3|4|5 => false,
             _ => false,
-        }
+        },
+        gravity: false,
     };
     tile
 }
