@@ -160,7 +160,7 @@ pub fn get_maq_tile(id: usize) -> Tile {
             2|3|4|5 => false,
             _ => false,
         },
-        gravity: false,
+        gravity: 0,
     };
     tile
 }

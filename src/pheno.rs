@@ -1,3 +1,5 @@
+use macroquad::prelude::*;
+
 use crate::floor::MaqFloor;
 use crate::tiles::*;
 use crate::maqs::*;
@@ -13,16 +15,24 @@ pub fn pass_time(floor: &mut MaqFloor) {
     let states = floor.states.clone();
     let mut x = 0;
     while x < (floor.wid*floor.len) {
+        let id = states[x];
         let mut tile = get_tile(0);
-        if x < tile_count() {
-            let mut tile = get_tile(states[x]);
-        } else if x < maq_count() {
-            let mut tile = get_maq_tile(states[x]);
-        } else {
-            return
+        if id < tile_count()  {
+            tile = get_tile(id);
+        } else if id < maq_count() {
+            tile = get_maq_tile(id);
         }
-        if tile.gravity {
-            //floor.shift();
+        let pos:(usize,usize) = (x / floor.wid, x % floor.len);
+        let mut cont = false;
+        if tile.gravity >= 1 && !cont {
+            cont = floor.shift(pos, false, 1);
+        }
+        if tile.gravity >= 2 && !cont {
+            let mut dir = 1;
+            if rand::gen_range(0,2)==0 {
+                dir = -1;
+            }
+            cont = floor.shift(pos, true, dir);
         }
         x+=1;
     }
