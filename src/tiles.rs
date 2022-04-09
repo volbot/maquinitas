@@ -1,5 +1,7 @@
 use macroquad::prelude::*;
 
+use crate::maqs::get_maq_tile;
+
 //Tile
 // contains a name and color
 pub struct Tile {
@@ -7,10 +9,14 @@ pub struct Tile {
     pub color: Color,
     pub passable: bool,
     pub gravity: usize,
+    pub movable: bool,
 }
 
 //returns a Tile for a given TileID
 pub fn get_tile(id: usize) -> Tile {
+    if id > tile_count() {
+        return get_maq_tile(id)
+    }
     let tile = Tile{
         name: match id {
             0 => "Nothing",
@@ -32,6 +38,10 @@ pub fn get_tile(id: usize) -> Tile {
             0|1 => 0,
             2 => 2,
             _ => 0
+        },
+        movable: match id {
+            1|2 => true,
+            0|_ => false,
         }
     };
     tile

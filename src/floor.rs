@@ -136,6 +136,10 @@ impl MaqFloor{
         let temp1 = self.states[pos_1.0*self.wid+pos_1.1];
         let temp2 = self.states[pos_2.0*self.wid+pos_2.1];
 
+        if !(get_tile(temp1).movable&&get_tile(temp1).movable) {
+            return
+        }
+
         self.states[pos_1.0*self.wid+pos_1.1] = temp2;
         self.states[pos_2.0*self.wid+pos_2.1] = temp1;
         
