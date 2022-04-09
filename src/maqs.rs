@@ -32,6 +32,7 @@ impl Worker for Mover {
             floor.maqs.insert(pos,self.maq);
         } else {
             self.maq.counter=0;
+            //get one position
             let target1 = if self.right {
                 if pos.0==floor.wid {
                     return
@@ -43,6 +44,7 @@ impl Worker for Mover {
                 }
                 (pos.0,pos.1+1)
             };
+            //get the other position
             let target2 = if self.right {
                 if pos.0==0 {
                     return
@@ -54,6 +56,7 @@ impl Worker for Mover {
                 }
                 (pos.0,pos.1-1)
             };
+            //swap them
             floor.swap(target1,target2);
             floor.maqs.insert(pos,self.maq);
         }
@@ -68,6 +71,7 @@ impl Worker for Walker {
         } else {
             self.maq.counter = 0;
             floor.maqs.insert(pos,self.maq);
+            //move in direction
             floor.shift(pos, self.dir==0 || self.dir == 2, 
                 if self.dir==0 || self.dir==1 {
                     1
@@ -86,28 +90,31 @@ impl Worker for Rotator {
         } else {
             self.maq.counter = 0;
             floor.maqs.insert(pos,self.maq);
+            //find position to rotate and set it depending on direction
             let mut pos_new = (pos.0 as i8, pos.1 as i8);
             if self.dir==0||self.dir==2 {pos_new.0 += if self.dir==0 {1} else {-1};}
             if self.dir==1||self.dir==3 {pos_new.1 += if self.dir==1 {1} else {-1};}
+            //if position doesn't exist, stop doing this code or it'll crash
             if pos_new.0 < 0 || pos_new.1 < 0 || pos_new.0 >= floor.wid as i8 || pos_new.1 >= floor.len as i8 {
                 return
             }
+            //get the Maq at the position to rotate, if it exists
             let maq_get = floor.maqs.get(&(pos_new.0 as usize,pos_new.1 as usize));
             match maq_get {
+                //if there is one, increment the id of the maq to be rotated
                 Some(x) => {
                     let new_id = match x.id{
-                        2 => 3,
-                        3 => 4,
-                        4 => 5,
+                        2|3|4 => x.id+1,
                         5 => 2,
-                        6 => 7,
-                        7 => 8,
-                        8 => 9,
+                        6|7|8 => x.id+1,
                         9 => 6,
+                        //if non-rotatable, return
                         _ => return,
                     };
+                    //get the counter and enact of the existing maq, so that the data is preserved
                     let counter_new = x.counter;
                     let enact_new = x.enact;
+                    //place everthing as it should be
                     floor.place(new_id, (pos_new.0 as usize,pos_new.1 as usize));
                     floor.maqs.insert((pos_new.0 as usize, pos_new.1 as usize),Maq{
                         counter: counter_new,
@@ -115,12 +122,15 @@ impl Worker for Rotator {
                         id: new_id
                     });
                 }
+                //if no maq, then nothing to rotate
                 None => return,
             }
         }
     }
 }
 
+//Returns a Tile for a given Maq.
+// id is the MaqID (subtract tilecount!)
 pub fn get_maq_tile(id: u8) -> Tile {
     let tile = Tile {
         name: match id {
@@ -153,3 +163,6 @@ pub fn get_maq_tile(id: u8) -> Tile {
     };
     tile
 }
+
+const MC: usize = 10;
+pub const fn maq_count() -> usize {MC}

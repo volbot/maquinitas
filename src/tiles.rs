@@ -32,6 +32,4 @@ pub fn get_tile(id: u8) -> Tile {
 }
 
 const TC: usize = 4;
-pub const fn tile_count() -> usize {
-    TC
-}
+pub const fn tile_count() -> usize {TC}
