@@ -121,7 +121,10 @@ impl MaqFloor{
             if !tile.passable || temp==this {
                 return false
             } else {
-                self.swap(pos_in,pos_out);
+                if tile.movable && temp!=0 {
+                    self.shift(pos_out,right,dist);
+                }
+                self.swap(pos_in,pos_out);    
             }
         }
         return true;
