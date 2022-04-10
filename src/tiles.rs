@@ -40,8 +40,8 @@ pub fn get_tile(id: usize) -> Tile {
             _ => 0
         },
         movable: match id {
-            1|2 => true,
-            0|_ => false,
+            0|1|2 => true,
+            _ => false,
         }
     };
     tile

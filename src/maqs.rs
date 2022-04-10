@@ -1,6 +1,6 @@
 use macroquad::prelude::*;
 use crate::floor::MaqFloor;
-use crate::tiles::Tile;
+use crate::tiles::*;
 
 pub trait Worker {
     fn work(&mut self, floor: &mut MaqFloor, pos:(usize, usize));
@@ -103,7 +103,7 @@ impl Worker for Rotator {
             match maq_get {
                 //if there is one, increment the id of the maq to be rotated
                 Some(x) => {
-                    let new_id = match x.id{
+                    let new_id = match x.id-tile_count(){
                         2|3|4 => x.id+1,
                         5 => 2,
                         6|7|8 => x.id+1,
